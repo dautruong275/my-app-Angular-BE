@@ -1,21 +1,21 @@
 package com.dau.angular.response;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 
-@Data
-@NoArgsConstructor
+@Data//toString
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class BaseResponse<T> {
-
-    @JsonProperty("status")
-    private HttpStatus status; // Đổi từ HttpStatus -> int
-
+public class ResponseObject {
     @JsonProperty("message")
     private String message;
 
+    @JsonProperty("status")
+    private HttpStatus status;
+
     @JsonProperty("data")
-    private T data;
+    private Object data;
 }
