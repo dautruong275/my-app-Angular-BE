@@ -25,6 +25,7 @@ public class UserService implements  IUserService{
         // Chuyển DTO thành Entity
         User user = UserMapper.INSTANCE.toEntity(userDTO);
         // Lưu vào database
+        User savedUser = userRepository.save(user);
         return UserMapper.INSTANCE.toResponseDTO(user);
     }
 
