@@ -11,11 +11,11 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
     @Bean
     public OpenAPI customOpenAPI() {
-        return new OpenAPI()
+             return new OpenAPI()
                 .info(new Info()
-                        .title("API Dự Án Spring Boot")
-                        .version("1.0.0")
-                        .description("API mẫu với OpenAPI 3"))
+                .title("API Dự Án Spring Boot")
+                .version("1.0.0")
+                .description("API mẫu với OpenAPI 3"))
                 .addServersItem(new Server().url("http://localhost:9999").description("Local Server"));
     }
 }
