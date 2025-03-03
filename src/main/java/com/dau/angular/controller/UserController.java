@@ -26,7 +26,7 @@ public class UserController {
         UserResponseDTO savedUser = userService.registerUser(userDTO);
 
         BaseResponse<UserResponseDTO> response = BaseResponse.<UserResponseDTO>builder()
-                .status(HttpStatus.CREATED.value()) // Trả về mã số 201 thay vì HttpStatus trực tiếp
+                .status(HttpStatus.CREATED) // Trả về mã số 201 thay vì HttpStatus trực tiếp
                 .message("User registered successfully")
                 .data(savedUser)
                 .build();
