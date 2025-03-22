@@ -1,12 +1,11 @@
 package com.dau.angular.response;
 
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
-@Builder
+@Data
 public class UserResponseDTO {
     private Long id;
     private String username;

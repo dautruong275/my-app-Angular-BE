@@ -1,4 +1,4 @@
-package com.dau.angular.service;
+package com.dau.angular.service.user;
 
 import com.dau.angular.dto.UserDTO;
 import com.dau.angular.response.UserResponseDTO;

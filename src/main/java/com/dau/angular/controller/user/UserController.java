@@ -1,14 +1,13 @@
-package com.dau.angular.controller;
+package com.dau.angular.controller.user;
 
 import com.dau.angular.dto.UserDTO;
 import com.dau.angular.response.BaseResponse;
 import com.dau.angular.response.ResponsePagenable;
 import com.dau.angular.response.UserResponseDTO;
-import com.dau.angular.service.UserService;
+import com.dau.angular.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
