@@ -5,16 +5,19 @@ import com.dau.angular.entity.User;
 import com.dau.angular.mapper.UserMapper;
 import com.dau.angular.repository.UserRepository;
 import com.dau.angular.response.UserResponseDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor// Lombok annotation để tự động tạo constructor với các final fields
 public class UserService implements  IUserService{
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     public UserResponseDTO registerUser(UserDTO userDTO) {
         if (userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
             throw new RuntimeException("Username đã tồn tại");
@@ -41,5 +44,12 @@ public class UserService implements  IUserService{
         return users.stream()
                 .map(UserMapper.INSTANCE::toResponseDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<UserResponseDTO> searchUsers(String keyword, PageRequest pageRequest) {
+        // Triển khai tìm kiếm (đã có từ trước)
+        Page<User> userPage = userRepository.findByKeyword(keyword, pageRequest);
+        return userPage.map(UserMapper.INSTANCE::toResponseDTO);
     }
 }
