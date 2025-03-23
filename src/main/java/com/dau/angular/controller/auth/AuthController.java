@@ -5,6 +5,7 @@ import com.dau.angular.dto.LoginRequest;
 import com.dau.angular.dto.RegisterRequest;
 import com.dau.angular.entity.User;
 import com.dau.angular.repository.UserRepository;
+import com.dau.angular.response.user.AuthResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -59,24 +60,4 @@ public class AuthController {
         return ResponseEntity.status(201).body("User registered successfully");
     }
 
-    // DTO cho response
-    public static class AuthResponse {
-        private String token;
-        private Long id;
-        private String username;
-        private String email;
-
-        public AuthResponse(String token, Long id, String username, String email) {
-            this.token = token;
-            this.id = id;
-            this.username = username;
-            this.email = email;
-        }
-        // DTO cho Register request
-
-        public String getToken() { return token; }
-        public Long getId() { return id; }
-        public String getName() { return username; }
-        public String getEmail() { return email; }
-    }
 }
