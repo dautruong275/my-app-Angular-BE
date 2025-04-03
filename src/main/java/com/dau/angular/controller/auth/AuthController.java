@@ -3,10 +3,13 @@ package com.dau.angular.controller.auth;
 import com.dau.angular.Util.JwtUtil;
 import com.dau.angular.dto.LoginRequest;
 import com.dau.angular.dto.RegisterRequest;
+import com.dau.angular.entity.Category;
 import com.dau.angular.entity.User;
 import com.dau.angular.repository.UserRepository;
+import com.dau.angular.response.BaseResponse;
 import com.dau.angular.response.user.AuthResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -57,7 +60,11 @@ public class AuthController {
         userRepository.save(user);
 
         // Trả về thông báo thành công
-        return ResponseEntity.status(201).body("User registered successfully");
+        return ResponseEntity.ok(
+                BaseResponse.<Category>builder()
+                        .status(HttpStatus.CREATED)
+                        .message("User registered successfully")
+                        .data(null)
+                        .build() );
     }
-
 }

@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // Cấu hình phân quyền
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() // Cho phép /api/auth/login, /register
+                        .requestMatchers("/api/v1/auth/**").permitAll() // Cho phép /api/auth/login, /register
                         .anyRequest().authenticated() // Các API khác yêu cầu token
                 ).addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); ;
         return http.build();
