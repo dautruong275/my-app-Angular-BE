@@ -4,15 +4,16 @@ import com.dau.angular.dto.CategoryDTO;
 import com.dau.angular.entity.Category;
 import com.dau.angular.mapper.CategoryMapper;
 import com.dau.angular.repository.CategoryRepository;
+import com.dau.angular.response.category.CategoryResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService implements ICategoryService{
@@ -22,47 +23,60 @@ public class CategoryService implements ICategoryService{
     @Autowired
     private CategoryMapper categoryMapper;
     @Override
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    public List<CategoryDTO> getAllCategories() {
+        return categoryRepository.findAll().stream()
+                .map(categoryMapper::entityToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<Category> getCategoryById(Long id) {
-        return categoryRepository.findById(id);
+    public CategoryDTO getCategoryById(Long id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found with id " + id));
+        return categoryMapper.entityToDto(category);
     }
 
     @Override
     @Transactional
-    public Category createCategory(CategoryDTO categoryDTO) {
-        Category newCategory = Category
+    public CategoryDTO createCategory(CategoryDTO categoryDTO) {
+        Category category = Category
                 .builder()
                 .name(categoryDTO.getName())
+                .createdBy(categoryDTO.getCreatedBy())
+                .isActive(categoryDTO.getIsActive())
+                .description(categoryDTO.getDescription())
                 .build();
-        return categoryRepository.save(categoryMapper.dtoToEntity(categoryDTO));
+        Category savedCategory = categoryRepository.save(category);
+        return categoryMapper.entityToDto(savedCategory);
     }
 
     @Override
     @Transactional
     public void deleteCategory(Long id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found with id " + id));
         categoryRepository.deleteById(id);
     }
 
     @Override
     @Transactional
-    public Category updateCategory(Long id, CategoryDTO categoryDTO) {
+    public CategoryDTO updateCategory(Long id, CategoryDTO categoryDTO) {
         Optional<Category> optionalCategory = categoryRepository.findById(id);
         if (optionalCategory.isEmpty()) {
             throw new RuntimeException("Danh mục không tồn tại!");
         }
         Category category = optionalCategory.get();
-        category.setName(categoryDTO.getName());
+        //category.setName(categoryDTO.getName());
         category.setActive(categoryDTO.getIsActive());
-        categoryRepository.save(category);
-        return categoryRepository.save(category);
+        categoryMapper.updateFromDto(categoryDTO, category);
+        Category updatedCategory = categoryRepository.save(category);
+
+        return categoryMapper.entityToDto(updatedCategory);
     }
 
     @Override
-    public Page<Category> searchCategories(String name, String createdBy, LocalDateTime fromDate, LocalDateTime toDate, String status, Pageable pageable) {
-        return null;
+    public Page<CategoryResponses> searchCategories(String name, Pageable pageable) {
+        Page<Category> categoryPage = categoryRepository.searchCategories(name, pageable);
+        return categoryPage.map(CategoryResponses::fromProduct);
     }
 }

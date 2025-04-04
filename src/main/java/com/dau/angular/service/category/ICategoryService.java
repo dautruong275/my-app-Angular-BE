@@ -1,27 +1,24 @@
 package com.dau.angular.service.category;
 
 import com.dau.angular.dto.CategoryDTO;
-import com.dau.angular.entity.Category;
+import com.dau.angular.response.category.CategoryResponses;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 public interface ICategoryService {
-    List<Category> getAllCategories();
+    List<CategoryDTO> getAllCategories();
 
-    Optional<Category> getCategoryById(Long id);
+    CategoryDTO getCategoryById(Long id);
 
-    Category createCategory(CategoryDTO categoryDTO);
+    CategoryDTO createCategory(CategoryDTO categoryDTO);
 
     void deleteCategory(Long id);
 
-    Category updateCategory(Long id, CategoryDTO categoryDTO);
+    CategoryDTO updateCategory(Long id, CategoryDTO categoryDTO);
 
-    Page<Category> searchCategories(String name, String createdBy, LocalDateTime fromDate, LocalDateTime toDate, String status, Pageable pageable);
+    Page<CategoryResponses> searchCategories(String name, Pageable pageable);
 
 
 
